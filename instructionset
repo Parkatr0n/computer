@@ -5,26 +5,26 @@ Instruction Set
 
 BASIC INSTRUCTIONS
 
-OP	INSTRUCTION		ARGUMENTS
-0	NONE
-1	LOAD 			REG VALUE
-2	LOAD_RAM 		REG ADDR
-3	STORE			VALUE ADDR
-4	STORE_REG		REG ADDR
+OPD	OPH	INSTRUCTION		ARGUMENTS
+0	0	NONE
+1	1	LOAD 			REG VALUE
+2	2	LOAD_RAM 		REG ADDR
+3	3	STORE			VALUE ADDR
+4	4	STORE_REG		REG ADDR
  
-8	ADD				REG REG
-9	SUB				REG REG
-A	MUL				REG REG
-B	DIV				REG REG
+8	8	ADD				REG REG
+9	9	SUB				REG REG
+10	A	MUL				REG REG
+11	B	DIV				REG REG
 
-10	CMP				REG REG
-11	JMP				ADDR
-12	JE				ADDR
-13	JNE				ADDR
-14	JG				ADDR
-15	JGE				ADDR
-16	JL				ADDR
-17	JLE 			ADDR
+16	10	CMP				REG REG
+17	11	JMP				ADDR
+18	12	JE				ADDR
+19	13	JNE				ADDR
+20	14	JG				ADDR
+21	15	JGE				ADDR
+22	16	JL				ADDR
+23	17	JLE 			ADDR
 
 MEMORY ADDRESSES
 Important Memory Addresses are listed below.
@@ -33,14 +33,14 @@ They can be useful for program development.
 All of the following memory addresses are read-only.
 Nothing will happen if you write to them.
 
-0x200	HARDWARE
-0x201 	Current Key
-0x202	Current Mouse Button
-0x203	Current Mouse X
-0x204	Current Mouse Y
+512		0x200	HARDWARE
+513		0x201 	Current Key
+513		0x202	Current Mouse Button
+514		0x203	Current Mouse X
+515		0x204	Current Mouse Y
 
-0x210	Monitor Size X
-0x211	Monitor Size Y
+528		0x210	Monitor Size X
+529		0x211	Monitor Size Y
 
 
 

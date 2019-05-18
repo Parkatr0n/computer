@@ -13,7 +13,9 @@ int main(int argc, char** argv) {
 	sf::RenderWindow window(sf::VideoMode(400, 400), "Computer");
 
 	// Custom Variables
-	Computer computer;
+	Computer computer(65536);
+
+	computer.loadFromDrive();
 
 	while (window.isOpen()) {
 		// Event Handling
@@ -24,6 +26,8 @@ int main(int argc, char** argv) {
 		}
 
 		// Logic
+
+		if (computer.step() == 1) window.close();
 
 		// Rendering
 		window.clear();
