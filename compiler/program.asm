@@ -1,11 +1,6 @@
 
 ; program.asm
 
-mov 1, b
-mov 0, a
+mov 255, $1000
 
-loop:
-	add a, b
-	dbg
-	jmp loop
 

@@ -37,12 +37,13 @@ Nothing will happen if you write to them.
 
 512		0x200	HARDWARE
 513		0x201 	Current Key
-513		0x202	Current Mouse Button
-514		0x203	Current Mouse X
-515		0x204	Current Mouse Y
+514		0x202	Current Mouse Button
+515		0x203	Current Mouse X
+516		0x204	Current Mouse Y
 
 528		0x210	Monitor Size X
 529		0x211	Monitor Size Y
 
-
+768		0x300	Video Memory Starts
+20480	0x50000 	Video Memory Ends
 

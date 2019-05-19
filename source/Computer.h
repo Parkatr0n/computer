@@ -6,6 +6,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <SFML/Graphics.hpp>
+
 class Computer {
 public:
 	int* ram;
@@ -20,7 +22,9 @@ public:
 	Computer(int ram_size);
 
 	void loadFromDrive();
-	bool step();
+	bool step(sf::RenderWindow& window);
+
+	void keyboard(int code);
 };
 
 Computer::Computer(int ram_size) {
@@ -30,6 +34,10 @@ Computer::Computer(int ram_size) {
 	// calloc() guarantees that the RAM is zeroed out.
 	ram = (int*) calloc(ram_size, sizeof(int));
 };
+
+void Computer::keyboard(int code) {
+	ram[0x201] = code;
+}
 
 int sign(int x) {
 	if (x < 0) return -1;
@@ -54,10 +62,33 @@ void Computer::loadFromDrive() {
 	}
 }
 
-bool Computer::step() {
+bool Computer::step(sf::RenderWindow& window) {
 	if (i_head > ram_size) return 1;
 
 	instruction = ram[i_head];
+
+	// Update RAM positions with information.
+	sf::Vector2i mpos = sf::Mouse::getPosition(window);
+	ram[515] = mpos.x;
+	ram[516] = mpos.y;
+
+	// Load Video Memory into a pixel array.
+	int width = 400;
+	int height = 400;
+
+	sf::Uint8* pixels = new sf::Uint8[width * height * 4];
+
+	sf::Texture texture;
+	texture.create(width, height);
+	
+	sf::Sprite sprite(texture);
+
+	for (register int i = 0x300; i < width * height * 4; i += 4) {
+		pixels[i] = ram[i];
+		pixels[i + 1] = ram[i + 1];
+		pixels[i + 2] = ram[i + 2];
+		pixels[i + 3] = ram[i + 3];
+	}
 
 	// Declare some storage variables.
 	int REG;
@@ -125,27 +156,27 @@ bool Computer::step() {
 		break;
 	case 0x12: // JE  ADDR
 		ADDR = ram[++i_head];
-		if (flag == 0) i_head -= ADDR - 1;
+		if (flag == 0) i_head += ADDR - 1;
 		break;
 	case 0x13: // JNE ADDR
 		ADDR = ram[++i_head];
-		if (flag != 0) i_head -= ADDR - 1;
+		if (flag != 0) i_head += ADDR - 1;
 		break;
 	case 0x14: // JG  ADDR
 		ADDR = ram[++i_head];
-		if (flag == 1) i_head -= ADDR - 1;
+		if (flag == 1) i_head += ADDR - 1;
 		break;
 	case 0x15: // JGE ADDR
 		ADDR = ram[++i_head];
-		if (flag != -1) i_head -= ADDR - 1;
+		if (flag != -1) i_head += ADDR - 1;
 		break;
 	case 0x16: // JL  ADDR
 		ADDR = ram[++i_head];
-		if (flag == -1) i_head -= ADDR - 1;
+		if (flag == -1) i_head += ADDR - 1;
 		break;
 	case 0x17: // JLE ADDR
 		ADDR = ram[++i_head];
-		if (flag != 1) i_head -= ADDR - 1;
+		if (flag != 1) i_head += ADDR - 1;
 		break;
 	case 26: // DEBUG
 		std::cout << registers[0] << " " << registers[1] << "\n";

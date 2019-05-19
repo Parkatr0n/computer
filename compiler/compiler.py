@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# Q Compiler
+# v0.1.0
+
 import sys
 
 insts = {}
@@ -54,6 +57,12 @@ def parse(tokens):
 
 	jumps = {}
 
+	jump_list = [
+		"jmp", "je",  "jne",
+		"jg",  "jge", "jl",
+		"jle"
+	]
+
 	# We do a double-passthrough to find jump markers and log them.
 	for i in range(len(tokens)):
 		t = tokens[i]
@@ -99,18 +108,17 @@ def parse(tokens):
 			reg1 = tokens[i + 1]
 			reg2 = tokens[i + 2]
 			instructions.extend([11, get(reg1), get(reg2)])
-		elif t == "jmp":
+		elif t == "cmp":
+			reg1 = tokens[i + 1]
+			reg2 = tokens[i + 2]
+			instructions.extend([16, get(reg1), get(reg2)])
+		elif t in jump_list:
 			loc = tokens[i + 1]
-			t = get_type(loc)
-			
-			addr = 1
+			_type = get_type(loc)
 
-			if t == "value":
-				addr = get(loc)
-			if t == "label":
-				addr = jumps[loc]
+			addr = jumps[loc]
 
-			instructions.extend([17, addr - i])
+			instructions.extend([17 + jump_list.index(t), addr - i])
 		elif t == "dbg":
 			instructions.extend([26])
 

@@ -23,10 +23,13 @@ int main(int argc, char** argv) {
 
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) window.close();
+
+			if (event.type == sf::Event::KeyPressed) computer.keyboard((int) event.text.unicode);
+			if (event.type == sf::Event::KeyReleased) computer.keyboard(0);
 		}
 
 		// Logic
-		if (computer.step() == 1) window.close();
+		if (computer.step(window) == 1) window.close();
 
 		// Rendering
 		window.clear();
