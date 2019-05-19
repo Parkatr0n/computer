@@ -78,17 +78,19 @@ bool Computer::step(sf::RenderWindow& window) {
 
 	sf::Uint8* pixels = new sf::Uint8[width * height * 4];
 
+	for (register int i = 0x300; i < width * height * 4; i += 4) {
+		pixels[i - 0x300] = 255;
+		pixels[i - 0x300 + 1] = ram[i + 1];
+		pixels[i - 0x300 + 2] = ram[i + 2];
+		pixels[i - 0x300 + 3] = 255;
+	}
+
 	sf::Texture texture;
-	texture.create(width, height);
-	
+	texture.update(pixels);
+
 	sf::Sprite sprite(texture);
 
-	for (register int i = 0x300; i < width * height * 4; i += 4) {
-		pixels[i] = ram[i];
-		pixels[i + 1] = ram[i + 1];
-		pixels[i + 2] = ram[i + 2];
-		pixels[i + 3] = ram[i + 3];
-	}
+	window.draw(sprite);
 
 	// Declare some storage variables.
 	int REG;
@@ -122,6 +124,11 @@ bool Computer::step(sf::RenderWindow& window) {
 		REG = ram[++i_head];
 		ADDR = ram[++i_head];
 		ram[ADDR] = registers[REG];
+		break;
+	case 0x5: // STORE_REG_ADDR REG REG
+		REG1 = ram[++i_head];
+		REG2 = ram[++i_head];
+		ram[registers[REG2]] = registers[REG1];
 		break;
 	
 	case 0x8: // ADD REG REG

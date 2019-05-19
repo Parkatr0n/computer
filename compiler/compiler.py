@@ -48,7 +48,10 @@ def get(loc):
 	if t == "reg":
 		return "abcd".find(loc)
 	elif t == "addr":
-		return int(loc.replace("$", "").replace(":", ""))
+		if loc.replace("$", "") in "abcd":
+			return "abcd".find(loc.replace("$", ""))
+		else:
+			return int(loc.replace("$", "").replace(":", ""))
 
 	return int(loc)
 
@@ -88,7 +91,11 @@ def parse(tokens):
 					instructions.extend([3, get(loc1), get(loc2)])
 			if loc1_type == "reg":
 				if loc2_type == "addr":
-					instructions.extend([4, get(loc1), get(loc2)])
+					if loc2.replace("$", "") in "abcd":
+						instructions.extend([5, get(loc1), get(loc2)])
+					else:
+						instructions.extend([4, get(loc1), get(loc2)])
+
 			if loc1_type == "addr":
 				if loc2_type == "reg":
 					instructions.extend([2, get(loc2), get(loc1)])

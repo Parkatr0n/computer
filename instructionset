@@ -11,7 +11,8 @@ OPD	OPH	INSTRUCTION		ARGUMENTS
 2	2	LOAD_RAM 		REG ADDR
 3	3	STORE			VALUE ADDR
 4	4	STORE_REG		REG ADDR
- 
+5	5	STORE_REG_ADDR	REG REG
+
 8	8	ADD				REG REG
 9	9	SUB				REG REG
 10	A	MUL				REG REG
@@ -45,5 +46,5 @@ Nothing will happen if you write to them.
 529		0x211	Monitor Size Y
 
 768		0x300	Video Memory Starts
-20480	0x50000 	Video Memory Ends
+		0x50000 Video Memory Ends
 

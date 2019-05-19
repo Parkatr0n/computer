@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 	sf::RenderWindow window(sf::VideoMode(400, 400), "Computer");
 
 	// Custom Variables
-	Computer computer(65536);
+	Computer computer(65536000);
 
 	computer.loadFromDrive();
 
