@@ -26,7 +26,6 @@ int main(int argc, char** argv) {
 		}
 
 		// Logic
-
 		if (computer.step() == 1) window.close();
 
 		// Rendering

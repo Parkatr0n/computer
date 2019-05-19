@@ -26,6 +26,8 @@ OPD	OPH	INSTRUCTION		ARGUMENTS
 22	16	JL				ADDR
 23	17	JLE 			ADDR
 
+26	20	DEBUG			
+
 MEMORY ADDRESSES
 Important Memory Addresses are listed below.
 They can be useful for program development.

@@ -38,15 +38,15 @@ int sign(int x) {
 }
 
 void Computer::loadFromDrive() {
-	std::ifstream file("drive", std::ios::binary | std::ios::in);
-	
+	std::ifstream file("program", std::ios::in);
+
 	int x;
-	int i;
+	int i = 0;
 	
 	// Load instructions from the bootloader straight into RAM.
 	// Bootloader starts at 0x0 and ends at 0x200.
 	while (file >> x) {
-		if (i > 0x1ff) break;
+		if (i >= 0x200) break;
 
 		ram[i] = x;
 
@@ -121,31 +121,34 @@ bool Computer::step() {
 		break;
 	case 0x11: // JMP ADDR
 		ADDR = ram[++i_head];
-		i_head = ADDR - 1;
+		i_head += ADDR - 1;
 		break;
 	case 0x12: // JE  ADDR
 		ADDR = ram[++i_head];
-		if (flag == 0) i_head = ADDR - 1;
+		if (flag == 0) i_head -= ADDR - 1;
 		break;
 	case 0x13: // JNE ADDR
 		ADDR = ram[++i_head];
-		if (flag != 0) i_head = ADDR - 1;
+		if (flag != 0) i_head -= ADDR - 1;
 		break;
 	case 0x14: // JG  ADDR
 		ADDR = ram[++i_head];
-		if (flag == 1) i_head = ADDR - 1;
+		if (flag == 1) i_head -= ADDR - 1;
 		break;
 	case 0x15: // JGE ADDR
 		ADDR = ram[++i_head];
-		if (flag != -1) i_head = ADDR - 1;
+		if (flag != -1) i_head -= ADDR - 1;
 		break;
 	case 0x16: // JL  ADDR
 		ADDR = ram[++i_head];
-		if (flag == -1) i_head = ADDR - 1;
+		if (flag == -1) i_head -= ADDR - 1;
 		break;
 	case 0x17: // JLE ADDR
 		ADDR = ram[++i_head];
-		if (flag != 1) i_head = ADDR - 1;
+		if (flag != 1) i_head -= ADDR - 1;
+		break;
+	case 26: // DEBUG
+		std::cout << registers[0] << " " << registers[1] << "\n";
 		break;
 	}
 
